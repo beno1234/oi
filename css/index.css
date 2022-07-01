@@ -1,0 +1,185 @@
+html,
+body{
+    height: 100%;
+    width: 100%;
+    margin: 0%;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+#app{
+  background-color: #339EF7;
+ 
+}
+
+.graph{
+  width: 50%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  place-content: center;
+  position: relative;
+  margin-top: 2%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#grafico{
+  top: 40%;
+  bottom: 40%;
+}
+
+.graph-m{
+  display: none;
+}
+
+.logo{
+  width: 200px;
+  margin: 50px;
+}
+
+.white-background{
+  background-color: #FFF;
+  border-radius: 10px;
+  width: 80%;
+  margin: 5px auto;
+  padding: 50px;
+  padding-bottom: 100px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 25% 50%;
+  grid-template-areas: "title title" "questions graph";
+}
+
+.title{
+  grid-area: title;
+  font-size: 30px;
+}
+
+.title h3{
+  margin-top: 0px;
+}
+
+.title p{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding-bottom: 10rem;
+}
+
+.pc button{
+  border-radius: 0.25rem;
+  background: #339EF7;
+  color: rgb(255, 255, 255);
+  height: 2.5rem;
+  border: 0;
+  font: 500;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  place-content: center;
+  margin: auto;
+  cursor: pointer;
+}
+
+.questions{
+  grid-area: questions;
+  text-align: left;
+}
+
+.group-input{
+  font-size: 16px;
+  margin: 20px 0px;
+}
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+input{
+  width: 98%;
+}
+
+.formulario{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.formulario span{
+  margin-left: 1.2rem;
+  padding-right: 0.25rem;
+}
+
+.formulario input{
+  width: auto;
+  height: auto;
+}
+
+.group-input label{
+  display: block;
+  margin: 10px auto;
+}
+
+.group-input input{
+  border: 1px solid #f0f0f0;
+  width: 50%;
+  padding: 5px 30px;
+  outline: none;
+}
+
+.group-input input:focus{
+  border: 1px solid #339EF7;
+}
+
+.clear{
+  clear: both;
+}
+
+.texto-fim{
+  text-align: center;
+  width: 100%;
+  margin-left: 270px;
+  color: rgb(13, 52, 230);
+  font-size: 21px;
+  font-weight: bold;
+}
+
+#tabela{
+  margin: auto;
+}
+
+
+
+.celular{
+  display: none;
+}
+
+@media (max-width: 800px){
+
+  .title h2{
+    font: 700 1px 'Poppins' sans-serif;
+    font-size: 1.5rem;
+  }
+
+  .white-background{
+    padding: 2rem;
+  }
+  .formulario{
+    display: inline-flex;
+    flex-direction: column;
+  }
+
+  .formulario span{
+    margin-top: 1rem;
+  }
+
+  .graph{
+    width: 100%;
+    height: auto;
+  }
+}

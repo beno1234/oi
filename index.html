@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Encontre seu quando - tabela</title>
+  <link rel="stylesheet" href="css/index.css">
+
+</head>
+
+<body>
+
+  <div id="app">
+    <img src="img/logo.png" class="logo" alt="">
+    <div class="white-background">
+      <div class="title">
+        <div class="title">
+          <h2>3 passos para você encontrar seu "quando"</h2>
+          <h5>Descubra qual é o seu perfil: matutino, intermediário ou noturno</h5>
+          <p>Este aplicativo ajudará você a identificar os seus horarios mais propicios do dia para que você realize
+            cada tarefa. Lembre-se que você tem diferente humor, energia e alerta no decorrer do dia. Você deve ajustar
+            a natureza de cada atividade ao melhor momento para você.</p>
+        </div>
+        <div class="clear"></div>
+
+        <div class="formulario">
+          <span>Nome:</span>
+          <input type="name" name="name" id="name">
+          <span>Data:</span>
+          <input type="date">
+        </div>
+
+
+        <div class="questions">
+
+
+          <div style="margin-top: 290px;" id="tabela">
+            <table border="1">
+              <thead>
+                <tr>
+                  <th>0 á 10</th>
+                  <th>Estado de Alerta</th>
+                  <th>Energia Fisíca</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+
+          <div class="graph" id="printJS-form2">
+            <canvas id="grafico" style="height:350px; width:370px"></canvas>
+          </div>
+          <div class="botao">
+            <div id="resultado"></div>
+            <br>
+            <p>
+            <div class="pc">
+              <button type="button" onclick="printJS({ printable: ['printJS-form2'], type: 'html',  })">
+                Salvar Gráfico
+              </button>
+              </p>
+            </div>
+            <p>
+            </p>
+          </div>
+          <div class="graph-m" id="celular">
+            <canvas id="grafico-m" style="height:350px; width:370px"></canvas>
+          </div>
+        </div>
+      </div>
+
+
+
+      <script>
+        function exemplo() {
+          let posicao = []
+          posicao.push(document.getElementById('inputA').value);
+          console.log(posicao)
+        }
+      </script>
+
+
+      <!-- development version, includes helpful console warnings -->
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+      <!-- production version, optimized for size and speed -->
+      <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
+      <script src=" https://printjs-4de6.kxcdn.com/print.min.js"></script>
+
+      <script src=" https://printjs-4de6.kxcdn.com/print.min.css"></script>
+
+
+      <script>
+
+        let alerta = {
+          sete: null,
+          oito: null,
+          dez: null,
+          onze: null,
+          treze: null,
+          catorze: null,
+          dezesseis: null,
+          dezessete: null,
+          dezenove: null,
+          vinte: null,
+          vintedois: null,
+          vintetres: null
+        }
+
+        let energia = {
+          sete: null,
+          oito: null,
+          dez: null,
+          onze: null,
+          treze: null,
+          catorze: null,
+          dezesseis: null,
+          dezessete: null,
+          dezenove: null,
+          vinte: null,
+          vintedois: null,
+          vintetres: null
+        }
+
+
+        let labelsValor = [
+          '7h',
+          '8h30',
+          '10h',
+          '11h30',
+          '13h',
+          '14h30',
+          '16h',
+          '17h30',
+          '19h',
+          '20h30',
+          '22h',
+          '23h30'
+        ]
+
+      </script>
+
+      <script>
+        function init() {
+
+          let content = document.getElementById("tabela");
+
+          Object.keys(alerta).forEach((alertaChave, index) => {
+
+            content.innerHTML += ` 
+        <tbody>
+            <tr>
+              <td>${labelsValor[index]}</td>
+              <td><input type="text" placeholder="O que estou fazendo?"/></td>
+              <td><input value="0" onkeyup="compareValues()" id="alerta_${index}" type="number" min="0" max="10" v-model="alerta.${alertaChave}" placeholder="Estado de Alerta"></td>
+              <td><input value="0" onkeyup="compareValues()" id="energia_${index}" type="number" min="0" max="10" v-model="energia.${alertaChave}" placeholder="Energia Fisica"></td>
+            </tr>
+          </tbody>
+        `
+          })
+        }
+
+
+
+        function compareValues(){
+
+          let alertaValues = [];
+          let energiaValues = [];
+
+          labelsValor.forEach((label, index) => {
+            alertaValues.push({
+              label,
+              valor: parseInt(document.getElementById(`alerta_${index}`).value)
+            });
+
+            energiaValues.push({
+              label,
+              valor: parseInt(document.getElementById(`energia_${index}`).value)
+            });
+          })
+
+          let formatValues = alertaValues.filter(v => v.valor !== null && v.valor > 0);
+          let genertValues = formatValues.length ? Math.max(...formatValues.map(o => o.valor)) : 0
+          let maiorConsumo = genertValues > 0 ? alertaValues.find(v => v.valor === genertValues) : { label: null, valor: 0 }
+
+          let formatValues2 = energiaValues.filter(v => v.valor !== null && v.valor > 0);
+          let genertValues2 = formatValues2.length ? Math.max(...formatValues2.map(o => o.valor)) : 0
+          let maiorConsumo2 = genertValues2 > 0 ? energiaValues.find(v => v.valor === genertValues2) : { label: null, valor: 0 }
+
+          document.getElementById("resultado").innerHTML = maiorConsumo.valor > 0 ? `<b>Neste dia você esta mais alerta as ${maiorConsumo?.label} e com mais energia ${maiorConsumo2?.label}.</b>` : `<b>Não existe um horario com maior consumo</b>`
+
+        };
+
+        init()
+      </script>
+
+      <script>
+
+        var app = new Vue({
+          el: '#app',
+          data() {
+            return {
+              alerta,
+              energia
+            }
+          },
+          mounted() {
+            var ctx = document.getElementById('grafico').getContext('2d');
+            var ctx2 = document.getElementById('grafico-m').getContext('2d');
+            new Chart(ctx, {
+              type: 'radar',
+              data: {
+                labels: labelsValor,
+                datasets: [
+                  {
+                    "label": "Estado de Alerta",
+                    "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                  },
+                  {
+                    "label": "Energia Fisíca",
+                    "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                  }
+                ]
+              },
+              options: {
+                scale: {
+                  angleLines: {
+                    display: true
+                  },
+                  ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 10
+                  }
+                }
+              }
+            });
+            new Chart(ctx2, {
+              type: 'radar',
+              data: {
+                labels: [
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '10',
+                  '11',
+                  '12'
+                ],
+                datasets: [
+                  {
+                    "label": "Estado de alerta",
+                    "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                  },
+                  {
+                    "label": "Energia Fisíca",
+                    "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                  }
+                ]
+              },
+              options: {
+                scale: {
+                  angleLines: {
+                    display: true
+                  },
+                  ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 10
+                  }
+                }
+              }
+            });
+          },
+          beforeUpdate() {
+            var ctx = document.getElementById('grafico').getContext('2d');
+            var ctx2 = document.getElementById('grafico-m').getContext('2d');
+            new Chart(ctx, {
+              type: 'radar',
+              data: {
+                labels: labelsValor,
+                datasets: [
+                  {
+                    "label": "Estado de Alerta",
+                    "data": [this.alerta.sete, this.alerta.oito, this.alerta.dez, this.alerta.onze, this.alerta.treze, this.alerta.catorze, this.alerta.dezesseis, this.alerta.dezessete, this.alerta.dezenove, this.alerta.vinte, this.alerta.vintedois, this.alerta.vintetres],
+                    "fill": true,
+                    "backgroundColor": "transparent",
+                    "borderColor": "rgb(255, 99, 132)",
+                    "pointBackgroundColor": "rgb(255, 99, 132)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgb(255, 99, 132)"
+                  },
+                  {
+                    "label": "Energia Fisíca",
+                    "data": [this.energia.sete, this.energia.oito, this.energia.dez, this.energia.onze, this.energia.treze, this.energia.catorze, this.energia.dezesseis, this.energia.dezessete, this.dezenove, this.energia.vinte, this.energia.vintedois, this.energia.vintetres],
+                    "fill": true,
+                    "backgroundColor": "transparent",
+                    "borderColor": "rgb(54, 162, 235)",
+                    "pointBackgroundColor": "rgb(54, 162, 235)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgb(54, 162, 235)"
+                  }
+                ]
+              },
+              options: {
+                scale: {
+                  angleLines: {
+                    display: true
+                  },
+                  ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 10
+                  }
+                }
+              }
+            });
+            new Chart(ctx2, {
+              type: 'radar',
+              data: {
+                labels: [
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '10',
+                  '11',
+                  '12'
+                ],
+                datasets: [
+                  {
+                    "label": "Estado de alerta",
+                    "data": [this.alerta.sete, this.alerta.oito, this.alerta.dez, this.alerta.onze, this.alerta.treze, this.alerta.catorze, this.alerta.dezesseis, this.alerta.dezessete, this.alerta.dezenove, this.alerta.vinte, this.alerta.vintedois, this.alerta.vintetres],
+                    "fill": true,
+                    "backgroundColor": "transparent",
+                    "borderColor": "rgb(255, 99, 132)",
+                    "pointBackgroundColor": "rgb(255, 99, 132)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgb(255, 99, 132)"
+                  },
+                  {
+                    "label": "Energia Fisica",
+                    "data": [this.energia.sete, this.energia.oito, this.energia.dez, this.energia.onze, this.energia.treze, this.energia.catorze, this.energia.dezesseis, this.energia.dezessete, this.dezenove, this.energia.vinte, this.energia.vintedois, this.energia.vintetres],
+                    "fill": true,
+                    "backgroundColor": "transparent",
+                    "borderColor": "rgb(54, 162, 235)",
+                    "pointBackgroundColor": "rgb(54, 162, 235)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgb(54, 162, 235)"
+                  }
+                ]
+              },
+              options: {
+                scale: {
+                  angleLines: {
+                    display: true
+                  },
+                  ticks: {
+                    suggestedMin: 0,
+                    suggestedMax: 10
+                  }
+                }
+              }
+            });
+          }
+        });
+      </script>
+
+      <script>
+        let print = () => {
+          let objFra = document.getElementById('myFrame');
+          objFra.contentWindow.focus();
+          objFra.contentWindow.print();
+        }
+
+        function print() {
+          var objFra = document.getElementById('myFrame');
+          objFra.contentWindow.focus();
+          objFra.contentWindow.print();
+        }
+      </script>
+
+
+</body>
+
+</html>
